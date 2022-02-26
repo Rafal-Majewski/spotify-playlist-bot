@@ -1,0 +1,25 @@
+{
+  "name": "spotify-playlist-bot",
+  "version": "0.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rafal-Majewski/spotify-playlist-bot.git"
+  },
+  "author": "Rafał Majewski",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/Rafal-Majewski/spotify-playlist-bot/issues"
+  },
+  "homepage": "https://github.com/Rafal-Majewski/spotify-playlist-bot#readme",
+  "devDependencies": {
+    "eslint": "^8.9.0"
+  },
+  "dependencies": {
+    "axios": "^0.26.0"
+  }
+}

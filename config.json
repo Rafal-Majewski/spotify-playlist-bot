@@ -1,0 +1,4 @@
+{
+	"port": "11882",
+	"authorizationCallbackPath": "/authorization-callback"
+}
