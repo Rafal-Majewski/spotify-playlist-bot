@@ -1,6 +1,7 @@
 class User {
 	displayName;
 	id;
+	playlists = new Map();
 	constructor({id, displayName}) {
 		this.id = id;
 		this.displayName = displayName;
