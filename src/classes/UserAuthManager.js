@@ -4,7 +4,7 @@ const User = require("./User.js");
 const UserAuth = require("./UserAuth.js");
 
 
-class AuthManager {
+class UsersAuthsManager {
 	constructor(mainConfig, auth) {
 		this.mainConfig = mainConfig;
 		this.auth = auth;
@@ -53,4 +53,4 @@ class AuthManager {
 	}
 }
 
-module.exports = AuthManager;
+module.exports = UsersAuthsManager;

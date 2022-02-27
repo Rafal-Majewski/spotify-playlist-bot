@@ -1,4 +1,4 @@
-const authManager = require("../modules/authManager.js");
+const usersAuthsManager = require("../modules/usersAuthsManager.js");
 
 const requestHandler = async (req, res) => {
 	const code = req.url.match(/.*\?.*code=([^&]*)/)[1];
@@ -7,7 +7,7 @@ const requestHandler = async (req, res) => {
 		res.end("No code provided");
 		return;
 	}
-	const user = await authManager.authorize(code);
+	const user = await usersAuthsManager.authorize(code);
 	res.writeHead(200);
 	res.end(`Welcome ${user.displayName}! Successfully authorized.`);
 };
