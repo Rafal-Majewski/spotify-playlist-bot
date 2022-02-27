@@ -4,7 +4,7 @@ class UsersManager {
 	getUserById(userId) {
 		return this.#users.get(userId);
 	}
-	await addUser(user) {
+	async addUser(user) {
 		this.#users.set(user.id, user);
 	}
 	constructor(playlistsManager) {
