@@ -2,3 +2,5 @@ node_modules/
 auth.json
 server_config.json
 users_auth/
+bot_config.json
+main_config.json
