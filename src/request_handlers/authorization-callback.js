@@ -1,7 +1,7 @@
 const axios = require("axios");
 const auth = require("../../auth.json");
 const fs = require("fs/promises");
-const config = require("../../config.json");
+const serverConfig = require("../../server_config.json");
 
 const requestHandler = async (req, res) => {
 	const code = req.url.match(/.*\?.*code=([^&]*)/)[1];
@@ -32,7 +32,7 @@ const requestHandler = async (req, res) => {
 			},
 		}
 	);
-	const usersAuthDirectoryPath = `./${config.usersAuthDirectoryName}`;
+	const usersAuthDirectoryPath = `./${serverConfig.usersAuthDirectoryName}`;
 	const userAuthFilePath = `${usersAuthDirectoryPath}/${meRequestResponse.data.id}.json`;
 	const userAuth = {
 		userId: meRequestResponse.data.id,

@@ -1,9 +1,9 @@
-const config = require("./config.json");
+const serverConfig = require("./server_config.json");
 const http = require("http");
 const notFoundRequestHandler = require("./src/request_handlers/not_found.js");
 const requestHandlerByPath = {
 	"/": require("./src/request_handlers/root.js"),
-	[config.authorizationCallbackPath]: require("./src/request_handlers/authorization-callback.js"),
+	[serverConfig.authorizationCallbackPath]: require("./src/request_handlers/authorization-callback.js"),
 };
 
 const mainRequestHandler = (req, res) => {
@@ -13,4 +13,4 @@ const mainRequestHandler = (req, res) => {
 };
 const server = http.createServer(mainRequestHandler);
 
-server.listen(config.port);
+server.listen(serverConfig.port);
