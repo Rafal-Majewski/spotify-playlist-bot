@@ -5,9 +5,14 @@ const UserAuth = require("./UserAuth.js");
 
 
 class UsersAuthsManager {
-	constructor(mainConfig, auth) {
+	mainConfig;
+	auth;
+	usersManager;
+	#usersAuths = new Map();
+	constructor(mainConfig, auth, usersManager) {
 		this.mainConfig = mainConfig;
 		this.auth = auth;
+		this.usersManager = usersManager;
 	}
 	async requestToken(code) {
 		return axios.post(
@@ -37,9 +42,12 @@ class UsersAuthsManager {
 	}
 	async fetchMe(accessToken) {
 		const meRequestResponse = await this.requestMe(accessToken);
-		return User.fromMeRequestResponseData(meRequestResponse.data);
+		const user = User.fromMeRequestResponseData(meRequestResponse.data);
+		this.usersManager.addUser(user);
+		return user;
 	}
 	async saveUserAuth(userAuth) {
+		this.#usersAuths.set(userAuth.userId, userAuth);
 		const userAuthFilePath = `${this.mainConfig.usersAuthDirectoryPath}/${userAuth.userId}.json`;
 		await fs.mkdir(this.mainConfig.usersAuthDirectoryPath, {recursive: true});
 		await fs.writeFile(userAuthFilePath, JSON.stringify(userAuth));
@@ -49,6 +57,7 @@ class UsersAuthsManager {
 		const user = await this.fetchMe(tokenRequestResponse.data.access_token);
 		const userAuth = UserAuth.fromTokenRequestResponseData(tokenRequestResponse.data, user);
 		await this.saveUserAuth(userAuth);
+		console.log(this.#usersAuths);
 		return user;
 	}
 }
