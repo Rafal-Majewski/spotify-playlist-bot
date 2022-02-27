@@ -43,7 +43,7 @@ class UsersAuthsManager {
 	async fetchMe(accessToken) {
 		const meRequestResponse = await this.requestMe(accessToken);
 		const user = User.fromMeRequestResponseData(meRequestResponse.data);
-		this.usersManager.addUser(user);
+		await this.usersManager.addUser(user);
 		return user;
 	}
 	async saveUserAuth(userAuth) {
@@ -57,7 +57,6 @@ class UsersAuthsManager {
 		const user = await this.fetchMe(tokenRequestResponse.data.access_token);
 		const userAuth = UserAuth.fromTokenRequestResponseData(tokenRequestResponse.data, user);
 		await this.saveUserAuth(userAuth);
-		console.log(this.#usersAuths);
 		return user;
 	}
 }
