@@ -1,4 +1,4 @@
 node_modules/
 auth.json
-config.json
+server_config.json
 users_auth/
