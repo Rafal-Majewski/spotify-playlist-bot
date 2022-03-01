@@ -3,7 +3,7 @@ const http = require("http");
 const notFoundRequestHandler = require("./src/request_handlers/not_found.js");
 const requestHandlerByPath = {
 	"/": require("./src/request_handlers/root.js"),
-	[serverConfig.authorizationCallbackPath]: require("./src/request_handlers/authorization-callback.js"),
+	[serverConfig.authorizationCallbackPath]: require("./src/request_handlers/authorization_callback.js"),
 };
 
 const mainRequestHandler = (req, res) => {
