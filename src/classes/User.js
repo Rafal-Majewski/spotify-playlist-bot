@@ -12,6 +12,10 @@ class User {
 			displayName: meRequestResponseData.display_name,
 		});
 	}
+	addPlaylist(playlist) {
+		this.playlists.set(playlist.id, playlist);
+	}
 }
+
 
 module.exports = User;

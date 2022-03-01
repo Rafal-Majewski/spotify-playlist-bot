@@ -3,23 +3,20 @@ class UserAuth {
 	accessToken;
 	refreshToken;
 	expirationTimestamp;
-	user;
-	constructor({userId, accessToken, refreshToken, expirationTimestamp}, user) {
+	constructor({userId, accessToken, refreshToken, expirationTimestamp}) {
 		this.userId = userId;
 		this.accessToken = accessToken;
 		this.refreshToken = refreshToken;
 		this.expirationTimestamp = expirationTimestamp;
-		this.user = user;
 	}
-	static fromTokenRequestResponseData(requestResponseData, user) {
+	static fromTokenRequestResponseData(requestResponseData, userId) {
 		return new UserAuth(
 			{
-				userId: user.id,
+				userId: userId,
 				accessToken: requestResponseData.access_token,
 				refreshToken: requestResponseData.refresh_token,
 				expirationTimestamp: Date.now() / 1000 + requestResponseData.expires_in,
-			},
-			user
+			}
 		);
 	}
 }

@@ -8,11 +8,12 @@ class UsersAuthsManager {
 	mainConfig;
 	auth;
 	usersManager;
-	#usersAuths = new Map();
-	constructor(mainConfig, auth, usersManager) {
+	usersAuths = new Map();
+	constructor(mainConfig, auth, usersManager, playlistsManager) {
 		this.mainConfig = mainConfig;
 		this.auth = auth;
 		this.usersManager = usersManager;
+		this.playlistsManager = playlistsManager;
 	}
 	async requestToken(code) {
 		return axios.post(
@@ -43,22 +44,26 @@ class UsersAuthsManager {
 	async fetchMe(accessToken) {
 		const meRequestResponse = await this.requestMe(accessToken);
 		const user = User.fromMeRequestResponseData(meRequestResponse.data);
-		await this.usersManager.addUser(user);
 		return user;
 	}
 	async saveUserAuth(userAuth) {
-		this.#usersAuths.set(userAuth.userId, userAuth);
+		this.usersAuths.set(userAuth.userId, userAuth);
 		const userAuthFilePath = `${this.mainConfig.usersAuthDirectoryPath}/${userAuth.userId}.json`;
 		await fs.mkdir(this.mainConfig.usersAuthDirectoryPath, {recursive: true});
 		await fs.writeFile(userAuthFilePath, JSON.stringify(userAuth));
 	}
+	async saveUser(user, userAuth) {
+		await this.usersManager.saveUser(user, userAuth, this.playlistsManager);
+	}
 	async authorize(code) {
 		const tokenRequestResponse = await this.requestToken(code);
 		const user = await this.fetchMe(tokenRequestResponse.data.access_token);
-		const userAuth = UserAuth.fromTokenRequestResponseData(tokenRequestResponse.data, user);
+		const userAuth = UserAuth.fromTokenRequestResponseData(tokenRequestResponse.data, user.id);
 		await this.saveUserAuth(userAuth);
+		await this.saveUser(user, userAuth);
 		return user;
 	}
 }
+
 
 module.exports = UsersAuthsManager;
