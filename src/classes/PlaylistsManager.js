@@ -15,7 +15,26 @@ class PlaylistsManager {
 			this.addPlaylist(playlist);
 		}
 	}
-	async fetchUserPlaylists(user, userAuth, usersManager) {
+	addSongToPlaylist(song, playlist) {
+		playlist.addSong(song);
+	}
+	addSongsToPlaylist(songs, playlist) {
+		for (const song of songs) {
+			this.addSongToPlaylist(song, playlist);
+		}
+	}
+	async savePlaylist(playlist, userAuth, songsManager) {
+		this.addPlaylist(playlist);
+		const playlistSongs = await songsManager.fetchPlaylistSongs(playlist, userAuth);
+		this.addSongToPlaylist(playlistSongs, playlist);
+	}
+	async savePlaylists(playlists, userAuth, songsManager) {
+		for (const playlist of playlists) {
+			await this.savePlaylist(playlist, userAuth, songsManager);
+		}
+	}
+	async fetchUserPlaylists(user, userAuth, usersManager, songsManager) {
+		console.log(`Fetching playlists for user "${user.name}".`);
 		const userPlaylistsRequestResponseData = await fetchAllPages(
 			`https://api.spotify.com/v1/users/${user.id}/playlists`,
 			`Bearer ${userAuth.accessToken}`
@@ -23,7 +42,7 @@ class PlaylistsManager {
 		const userPlaylists = userPlaylistsRequestResponseData.map((playlistRequestResponseData) => (
 			this.getPlaylistById(playlistRequestResponseData.id) || Playlist.fromPlaylistRequestResponseData(playlistRequestResponseData, usersManager)
 		));
-		this.addPlaylists(userPlaylists);
+		await this.savePlaylists(userPlaylists, userAuth, songsManager);
 		return userPlaylists;
 	}
 }

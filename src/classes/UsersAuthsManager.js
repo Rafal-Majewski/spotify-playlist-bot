@@ -8,12 +8,15 @@ class UsersAuthsManager {
 	mainConfig;
 	auth;
 	usersManager;
+	playlistsManager;
+	songsManager;
 	usersAuths = new Map();
-	constructor(mainConfig, auth, usersManager, playlistsManager) {
+	constructor(mainConfig, auth, usersManager, playlistsManager, songsManager) {
 		this.mainConfig = mainConfig;
 		this.auth = auth;
 		this.usersManager = usersManager;
 		this.playlistsManager = playlistsManager;
+		this.songsManager = songsManager;
 	}
 	async requestToken(code) {
 		return axios.post(
@@ -53,7 +56,7 @@ class UsersAuthsManager {
 		await fs.writeFile(userAuthFilePath, JSON.stringify(userAuth));
 	}
 	async saveUser(user, userAuth) {
-		await this.usersManager.saveUser(user, userAuth, this.playlistsManager);
+		await this.usersManager.saveUser(user, userAuth, this.playlistsManager, this.songsManager);
 	}
 	async authorize(code) {
 		const tokenRequestResponse = await this.requestToken(code);

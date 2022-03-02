@@ -6,11 +6,10 @@ class UsersManager {
 	addUser(user) {
 		this.#users.set(user.id, user);
 	}
-	async saveUser(user, userAuth, playlistsManager) {
+	async saveUser(user, userAuth, playlistsManager, songsManager) {
 		this.addUser(user);
-		const userPlaylists = await playlistsManager.fetchUserPlaylists(user, userAuth, this);
+		const userPlaylists = await playlistsManager.fetchUserPlaylists(user, userAuth, this, songsManager);
 		this.addPlaylistsToUser(userPlaylists, user);
-		
 	}
 	addPlaylistToUser(playlist, user) {
 		user.addPlaylist(playlist);

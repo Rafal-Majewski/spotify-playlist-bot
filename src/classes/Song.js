@@ -5,6 +5,12 @@ class Song {
 		this.id = id;
 		this.title = title;
 	}
+	static fromSongRequestResponseData(songRequestResponseData) {
+		return new Song({
+			id: songRequestResponseData.id,
+			title: songRequestResponseData.name,
+		});
+	}
 }
 
 
