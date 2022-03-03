@@ -12,8 +12,10 @@ const requestHandler = async (req, res) => {
 		return res.end(`Welcome ${user.name}! Successfully authorized.`);
 	}).catch((error) => {
 		if (
-				error?.response.url === "https://accounts.spotify.com/api/token"
-				&& error.response.status === 400
+				error.response && (
+					error.response.url === "https://accounts.spotify.com/api/token"
+					&& error.response.status === 400
+				)
 			) {
 			res.writeHead(400);
 			return res.end("Invalid code.");
