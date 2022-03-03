@@ -2,14 +2,14 @@ class User {
 	displayName;
 	id;
 	playlists = new Map();
-	constructor({id, displayName}) {
+	constructor({id, name}) {
 		this.id = id;
-		this.displayName = displayName;
+		this.name = name;
 	}
 	static fromMeRequestResponseData(meRequestResponseData) {
 		return new User({
 			id: meRequestResponseData.id,
-			displayName: meRequestResponseData.display_name,
+			name: meRequestResponseData.display_name,
 		});
 	}
 	addPlaylist(playlist) {
