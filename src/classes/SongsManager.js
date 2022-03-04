@@ -24,7 +24,6 @@ class SongsManager {
 		const playlistSongsRequestResponseData = songsOnPlaylistRequestResponseData.map((songOnPlaylistRequestResponseData) => (
 			songOnPlaylistRequestResponseData.track
 		)).filter(Boolean);
-
 		const playlistSongs = playlistSongsRequestResponseData.map((songRequestResponseData) => (
 			this.getSongById(songRequestResponseData.id) || Song.fromSongRequestResponseData(songRequestResponseData)
 		));

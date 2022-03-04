@@ -8,11 +8,9 @@ class UsersAuthsManager {
 	mainConfig;
 	auth;
 	usersAuths = new Map();
-	usersManager;
-	constructor(mainConfig, auth, usersManager) {
+	constructor(mainConfig, auth) {
 		this.mainConfig = mainConfig;
 		this.auth = auth;
-		this.usersManager = usersManager;
 	}
 	async #requestToken(code) {
 		return axios.post(
@@ -45,14 +43,24 @@ class UsersAuthsManager {
 		const user = User.fromMeRequestResponseData(meRequestResponse.data);
 		return user;
 	}
-	async saveUserAuth(userAuth) {
+	addUserAuth(userAuth) {
 		this.usersAuths.set(userAuth.userId, userAuth);
+	}
+	async saveUserAuth(userAuth) {
 		const userAuthFilePath = `${this.mainConfig.usersAuthDirectoryPath}/${userAuth.userId}.json`;
 		await fs.mkdir(this.mainConfig.usersAuthDirectoryPath, {recursive: true});
 		await fs.writeFile(userAuthFilePath, JSON.stringify(userAuth));
+		this.addUserAuth(userAuth);
 	}
-	async saveUser(user, userAuth) {
-		await this.usersManager.saveUser(user, userAuth);
+	async loadUserAuth(userAuthFilePath) {
+		const userAuth = JSON.parse(await fs.readFile(userAuthFilePath));
+		this.addUserAuth(userAuth);
+	}
+	async loadUsersAuths() {
+		const usersAuthsFilesPaths = await fs.readdir(this.mainConfig.usersAuthDirectoryPath);
+		for (const userAuthFilePath of usersAuthsFilesPaths) {
+			await this.loadUserAuth(`${this.mainConfig.usersAuthDirectoryPath}/${userAuthFilePath}`);
+		}
 	}
 	async authorizeCode(code) {
 		console.log(`Authorizing code "${code.slice(0, 5)}...".`);
@@ -60,7 +68,6 @@ class UsersAuthsManager {
 		const user = await this.#fetchMe(tokenRequestResponse.data.access_token);
 		const userAuth = UserAuth.fromTokenRequestResponseData(tokenRequestResponse.data, user.id);
 		await this.saveUserAuth(userAuth);
-		await this.saveUser(user, userAuth);
 		return user;
 	}
 }

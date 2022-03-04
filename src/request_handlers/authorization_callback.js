@@ -7,14 +7,14 @@ const requestHandler = async (req, res) => {
 		res.end("No code provided");
 		return;
 	}
-	await app.authorizeCode(code).then((user) => {
+	await app.usersAuthsManager.authorizeCode(code).then((user) => {
 		res.writeHead(200);
 		return res.end(`Welcome ${user.name}! Successfully authorized.`);
 	}).catch((error) => {
 		if (
 				error.response && (
 					error.response.url === "https://accounts.spotify.com/api/token"
-					&& error.response.status === 400
+					&& error.response.status === 400 
 				)
 			) {
 			res.writeHead(400);

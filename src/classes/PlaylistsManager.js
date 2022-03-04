@@ -28,9 +28,9 @@ class PlaylistsManager {
 		}
 	}
 	async savePlaylist(playlist, userAuth) {
-		this.#addPlaylist(playlist);
 		const playlistSongs = await this.songsManager.fetchPlaylistSongs(playlist, userAuth);
 		this.#addSongsToPlaylist(playlistSongs, playlist);
+		this.#addPlaylist(playlist);
 	}
 	async savePlaylists(playlists, userAuth) {
 		for (const playlist of playlists) {
