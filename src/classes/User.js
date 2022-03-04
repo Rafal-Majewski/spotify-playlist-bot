@@ -1,5 +1,5 @@
 class User {
-	displayName;
+	name;
 	id;
 	playlists = new Map();
 	constructor({id, name}) {
